@@ -1,7 +1,6 @@
-﻿using DataAccess.DAO;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Data.SqlClient;
+using Microsoft.Data.SqlClient;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -29,7 +28,7 @@ namespace DataAccess.DAOs
         //Paso 2: Redefinir el constructor default y convertirlo en privado
         private SQL_DAO()
         {
-            _connectionString = @"Data Source=.;Initial Catalog=shopping-cart-db2;Integrated Security=True;Trust Server Certificate=True";
+            _connectionString = @"Data Source=DESKTOP-LFLVQOG\SQLEXPRESS;Initial Catalog=CenfoCinemas_DB;Integrated Security=True;Trust Server Certificate=True";
         }
 
         //Paso 3: Definir el metodo que expone la unica instancia de SqlDao
