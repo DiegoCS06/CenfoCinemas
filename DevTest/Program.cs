@@ -1,4 +1,8 @@
 ﻿using DataAccess.DAOs;
+using DTOs;
+using DataAccess.CRUD;
+using System.Text.Json.Serialization;
+using Newtonsoft.Json;
 
 public class Program {
 
@@ -23,7 +27,7 @@ public class Program {
                 CRE_USER_PR();
                 break;
             case 2:
-                // Call a method to consult user
+                RET_USER_PR();
                 break;
             case 3:
                 UPD_USER_PR();
@@ -35,7 +39,7 @@ public class Program {
                 CRE_MOVIE_PR();
                 break;
             case 6:
-                // Call a method to consult movie
+                RET_MOVIES_PR();
                 break;
             case 7:
                 UPD_MOVIE_PR();
@@ -70,6 +74,19 @@ public class Program {
         Console.WriteLine("Digite la fecha de nacimiento del usuario (yyyy-mm-dd): ");
         var userBirthDate = DateTime.Parse(Console.ReadLine());
 
+        var user = new User()
+        {
+            UserCode = userCode,
+            Name = userName,
+            Email = userEmail,
+            Password = userPassword,
+            Status = userStatus,
+            BirthDate = userBirthDate
+        };
+
+        var uCrud = new UserCrudFactory();
+        uCrud.Create(user);
+
         var sqlOperation = new SQLOperation();
         sqlOperation.ProcedureName = "CRE_USER_PR";
 
@@ -84,6 +101,19 @@ public class Program {
 
         sqlDao.ExecuteProcedure(sqlOperation);
     }
+
+    public static void RET_USER_PR()
+    {
+
+        var uCrud = new UserCrudFactory();
+        var listUsers = uCrud.RetrieveAll<User>();
+        foreach (var user in listUsers)
+        {
+            Console.WriteLine(JsonConvert.SerializeObject(user));
+        }
+
+    }
+
 
     public static void CRE_MOVIE_PR()
     {
@@ -115,6 +145,18 @@ public class Program {
         var sqlDao = SQL_DAO.GetInstance();
 
         sqlDao.ExecuteProcedure(sqlOperation);
+    }
+
+    public static void RET_MOVIES_PR()
+    {
+
+        var mCrud = new MovieCrudFactory();
+        var listMovies = mCrud.RetrieveAll<Movie>();
+        foreach (var movie in listMovies)
+        {
+            Console.WriteLine(JsonConvert.SerializeObject(movie));
+        }
+
     }
 
     public static void UPD_USER_PR()
