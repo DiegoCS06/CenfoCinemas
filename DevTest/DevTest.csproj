@@ -13,6 +13,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\CenfoCinemas\DTOs.csproj" />
+    <ProjectReference Include="..\CoreApp\CoreApp.csproj" />
     <ProjectReference Include="..\DataAccess\DataAccess.csproj" />
   </ItemGroup>
 

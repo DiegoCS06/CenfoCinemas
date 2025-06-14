@@ -1,6 +1,7 @@
 ﻿using DataAccess.DAOs;
 using DTOs;
 using DataAccess.CRUD;
+using CoreApp;
 using System.Text.Json.Serialization;
 using Newtonsoft.Json;
 
@@ -84,7 +85,9 @@ public class Program {
             BirthDate = userBirthDate
         };
 
+        var um = new UserManager();
         var uCrud = new UserCrudFactory();
+
         uCrud.Create(user);
 
         var sqlOperation = new SQLOperation();

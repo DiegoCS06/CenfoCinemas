@@ -62,6 +62,24 @@ namespace DataAccess.CRUD
             return lstMovies;
         }
 
+        public T RetrieveById<T>(int id)
+        {
+            var sqlOperation = new SQLOperation() { ProcedureName = "RET_MOVIE_BY_ID_PR" };
+
+            sqlOperation.AddIntParam("P_Id", id);
+
+            var lstResult = _sqlDao.ExecuteQueryProcedure(sqlOperation);
+
+            if (lstResult.Count > 0)
+            {
+                var row = lstResult[0];
+                var movie = BuildMovie(row);
+                return (T)(object)movie;
+            }
+
+            return default(T);
+        }
+
         public override T RetrieveById<T>()
         {
             throw new NotImplementedException();

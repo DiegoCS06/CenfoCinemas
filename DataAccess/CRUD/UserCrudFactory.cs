@@ -65,9 +65,55 @@ namespace DataAccess.CRUD
             return lstUsers;
         }
 
-        public override T RetrieveById<T>()
+        public T RetrieveByUserCode<T>(User user)
         {
-            throw new NotImplementedException();
+            var sqlOperation = new SQLOperation() { ProcedureName = "RET_USER_BY_CODE_PR" };
+
+            sqlOperation.AddStringParameter("P_Code", user.UserCode);
+
+            var lstResult = _sqlDao.ExecuteQueryProcedure(sqlOperation);
+
+            if (lstResult.Count > 0)
+            {
+                var row = lstResult[0];
+                user = BuildUser(row);
+
+                return (T)Convert.ChangeType(user, typeof(T));
+            }
+
+            return default(T);
+        }
+
+        public T RetrieveById<T>(int id)
+        {
+            var sqlOperation = new SQLOperation() { ProcedureName = "RET_USER_BY_ID_PR" };
+
+            sqlOperation.AddIntParam("P_Id", id);
+
+            var lstResult = _sqlDao.ExecuteQueryProcedure(sqlOperation);
+
+            if (lstResult.Count > 0)
+            {
+                var row = lstResult[0];
+                var user = BuildUser(row);
+                return (T)(object)user;
+            }
+
+            return default(T);
+        }
+
+        public T RetrieveByEmail<T>(User user)
+        {
+            var sqlOperation = new SQLOperation() { ProcedureName = "RET_USER_BY_EMAIL_PR" };
+            sqlOperation.AddStringParameter("P_Email", user.Email);
+            var lstResult = _sqlDao.ExecuteQueryProcedure(sqlOperation);
+            if (lstResult.Count > 0)
+            {
+                var row = lstResult[0];
+                user = BuildUser(row);
+                return (T)Convert.ChangeType(user, typeof(T));
+            }
+            return default(T);
         }
 
         public override void Update(BaseDTO baseDTO)
@@ -90,6 +136,11 @@ namespace DataAccess.CRUD
                 BirthDate = row["BirthDate"] == DBNull.Value ? DateTime.MinValue : (DateTime)row["BirthDate"],
                 Status = row["Status"].ToString()
             };
+        }
+
+        public override T RetrieveById<T>()
+        {
+            throw new NotImplementedException();
         }
     }
 }
