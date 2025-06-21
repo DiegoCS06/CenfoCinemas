@@ -1,4 +1,4 @@
-﻿using DataAccess.DAOs;
+﻿    using DataAccess.DAOs;
 using DTOs;
 using System;
 using System.Collections.Generic;
@@ -33,11 +33,6 @@ namespace DataAccess.CRUD
        
             _sqlDao.ExecuteProcedure(sqlOperation);
 
-        }
-
-        public override void Delete(BaseDTO baseDTO)
-        {
-            throw new NotImplementedException();
         }
 
         public override T Retrieve<T>()
@@ -84,19 +79,19 @@ namespace DataAccess.CRUD
             return default(T);
         }
 
-        public T RetrieveById<T>(int id)
+        public T RetrieveById<T>(User user)
         {
             var sqlOperation = new SQLOperation() { ProcedureName = "RET_USER_BY_ID_PR" };
 
-            sqlOperation.AddIntParam("P_Id", id);
+            sqlOperation.AddIntParam("P_Id", user.Id);
 
             var lstResult = _sqlDao.ExecuteQueryProcedure(sqlOperation);
 
             if (lstResult.Count > 0)
             {
                 var row = lstResult[0];
-                var user = BuildUser(row);
-                return (T)(object)user;
+                user = BuildUser(row);
+                return (T) Convert.ChangeType(user, typeof(T));
             }
 
             return default(T);
@@ -105,8 +100,11 @@ namespace DataAccess.CRUD
         public T RetrieveByEmail<T>(User user)
         {
             var sqlOperation = new SQLOperation() { ProcedureName = "RET_USER_BY_EMAIL_PR" };
+
             sqlOperation.AddStringParameter("P_Email", user.Email);
+
             var lstResult = _sqlDao.ExecuteQueryProcedure(sqlOperation);
+
             if (lstResult.Count > 0)
             {
                 var row = lstResult[0];
@@ -118,7 +116,29 @@ namespace DataAccess.CRUD
 
         public override void Update(BaseDTO baseDTO)
         {
-            throw new NotImplementedException();
+            var user = baseDTO as User;
+            var sqlOperation = new SQLOperation() { ProcedureName = "UPD_USER_PR" };
+
+            sqlOperation.AddIntParam("P_Id", user.Id);
+            sqlOperation.AddDateTimeParam("P_Created", user.Created);
+            sqlOperation.AddDateTimeParam("P_Updated", user.Updated);
+            sqlOperation.AddStringParameter("P_UserCode", user.UserCode);
+            sqlOperation.AddStringParameter("P_Name", user.Name);
+            sqlOperation.AddStringParameter("P_Email", user.Email);
+            sqlOperation.AddStringParameter("P_Password", user.Password);
+            sqlOperation.AddStringParameter("P_Status", user.Status);
+            sqlOperation.AddDateTimeParam("P_BirthDate", user.BirthDate);
+
+            _sqlDao.ExecuteProcedure(sqlOperation);
+        }
+
+
+        public override void Delete(BaseDTO baseDTO)
+        {
+            var user = baseDTO as User;
+            var sqlOperation = new SQLOperation() { ProcedureName = "DEL_USER_PR" };
+            sqlOperation.AddIntParam("P_Id", user.Id);
+            _sqlDao.ExecuteProcedure(sqlOperation);
         }
 
         //Metodo que convierte diccionario en un usuario
@@ -139,6 +159,11 @@ namespace DataAccess.CRUD
         }
 
         public override T RetrieveById<T>()
+        {
+            throw new NotImplementedException();
+        }
+
+        public T RetrieveByEmail<T>(T user)
         {
             throw new NotImplementedException();
         }

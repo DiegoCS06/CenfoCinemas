@@ -1,0 +1,11 @@
+﻿USE [CenfoCinemas_DB]
+GO
+
+CREATE PROCEDURE DEL_USER_PR
+    @P_Id INT
+AS
+BEGIN
+    DELETE FROM [dbo].[TBL_User]
+    WHERE Id = @P_Id;
+END
+GO

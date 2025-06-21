@@ -22,7 +22,6 @@ namespace DataAccess.CRUD
 
             sqlOperation.ProcedureName = "CRE_MOVIE_PR";
 
-            sqlOperation.AddIntParam("P_Id", movie.Id);
             sqlOperation.AddStringParameter("P_Title", movie.Title);
             sqlOperation.AddStringParameter("P_Description", movie.Description);
             sqlOperation.AddDateTimeParam("P_ReleaseDate", movie.ReleaseDate);
@@ -30,11 +29,6 @@ namespace DataAccess.CRUD
             sqlOperation.AddStringParameter("P_Director", movie.Director);
 
             _sqlDao.ExecuteProcedure(sqlOperation);
-        }
-
-        public override void Delete(BaseDTO baseDTO)
-        {
-            throw new NotImplementedException();
         }
 
         public override T Retrieve<T>()
@@ -80,14 +74,45 @@ namespace DataAccess.CRUD
             return default(T);
         }
 
-        public override T RetrieveById<T>()
+        public T RetrieveById<T>(Movie movie)
         {
-            throw new NotImplementedException();
+            var sqlOperation = new SQLOperation() { ProcedureName = "RET_MOVIE_BY_ID_PR" };
+
+            sqlOperation.AddIntParam("P_Id", movie.Id);
+
+            var lstResult = _sqlDao.ExecuteQueryProcedure(sqlOperation);
+
+            if (lstResult.Count > 0)
+            {
+                var row = lstResult[0];
+                movie = BuildMovie(row);
+                return (T)Convert.ChangeType(movie, typeof(T));
+            }
+
+            return default(T);
         }
 
         public override void Update(BaseDTO baseDTO)
         {
-            throw new NotImplementedException();
+            var movie = baseDTO as Movie;
+            var sqlOperation = new SQLOperation() { ProcedureName = "UPD_MOVIE_PR" };
+
+            sqlOperation.AddIntParam("P_Id", movie.Id);
+            sqlOperation.AddStringParameter("P_Title", movie.Title);
+            sqlOperation.AddStringParameter("P_Description", movie.Description);
+            sqlOperation.AddDateTimeParam("P_ReleaseDate", movie.ReleaseDate);
+            sqlOperation.AddStringParameter("P_Genre", movie.Genre);
+            sqlOperation.AddStringParameter("P_Director", movie.Director);
+
+            _sqlDao.ExecuteProcedure(sqlOperation);
+        }
+
+        public override void Delete(BaseDTO baseDTO)
+        {
+            var movie = baseDTO as Movie;
+            var sqlOperation = new SQLOperation() { ProcedureName = "DEL_MOVIE_PR" };
+            sqlOperation.AddIntParam("P_Id", movie.Id);
+            _sqlDao.ExecuteProcedure(sqlOperation);
         }
         private Movie BuildMovie(Dictionary<string, object> row)
         {
@@ -102,6 +127,11 @@ namespace DataAccess.CRUD
                 Genre = row["Genre"].ToString(),
                 Director = row["Director"].ToString()
             };
+        }
+
+        public override T RetrieveById<T>()
+        {
+            throw new NotImplementedException();
         }
     }
 }
