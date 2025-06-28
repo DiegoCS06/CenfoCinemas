@@ -81,13 +81,13 @@ namespace WebAPI.Controllers
 
         [HttpDelete]
         [Route("Delete")]
-        public ActionResult Delete(int id)
+        public ActionResult Delete(Movie movie)
         {
             try
             {
                 var mm = new MovieManager();
-                mm.Delete(id);
-                return Ok($"Pelicula con ID {id} eliminada correctamente.");
+                mm.Delete(movie.Id);
+                return Ok($"Pelicula con ID {movie.Id} eliminada correctamente.");
             }
             catch (Exception ex)
             {
