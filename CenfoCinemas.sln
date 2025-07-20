@@ -12,11 +12,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataAccess", "DataAccess\DataAccess.csproj", "{91B0472C-13BD-447C-9126-7373E597F712}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "2_CoreApp", "2_CoreApp", "{8E6E067E-3FA0-4753-8A65-7E6875F6ABFA}"
-	ProjectSection(SolutionItems) = preProject
-		TextFile1.txt = TextFile1.txt
-	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CoreApp", "CoreApp\CoreApp.csproj", "{B2A70835-BC4D-4EF7-A439-416AC8BB29F5}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BaseManager", "CoreApp\BaseManager.csproj", "{B2A70835-BC4D-4EF7-A439-416AC8BB29F5}"
 	ProjectSection(ProjectDependencies) = postProject
 		{91B0472C-13BD-447C-9126-7373E597F712} = {91B0472C-13BD-447C-9126-7373E597F712}
 	EndProjectSection
